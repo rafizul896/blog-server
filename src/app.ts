@@ -3,7 +3,6 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { authRoutes } from './app/modules/auth/auth.route';
 import globalErrorHandler from './app/middlewares/globalErrorhandler';
-import auth from './app/middlewares/auth';
 
 const app: Application = express();
 
@@ -19,14 +18,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send({
     status: true,
     message: 'Blog server is running..!',
-  });
-});
-
-app.get('/test', auth('admin','user'), (req: Request, res: Response) => {
-
-  res.send({
-    status: true,
-    message: 'Checking for Auth',
   });
 });
 
