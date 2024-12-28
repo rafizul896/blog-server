@@ -12,7 +12,7 @@ const register = async (payload: IUser) => {
 };
 
 const login = async (payload: IUser) => {
-  const user = await User.findOne({ email: payload.email });
+  const user = await User.findOne({ email: payload.email }).select('+password');
 
   // checking if the user is exists
   if (!user) {
