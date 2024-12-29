@@ -30,6 +30,28 @@ const createBlog = catchAsync(async (req, res) => {
   });
 });
 
+const updateBlog = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const token = req.headers.authorization;
+
+  const decoded = jwt.verify(
+    token as string,
+    config.jwt_access_secret as string,
+  ) as JwtPayload;
+
+  const { email } = decoded;
+
+  const result = await BlogServices.updateBlogIntoDB(id, email, req.body);
+
+  sendResponce(res, {
+    success: true,
+    message: 'Blog updated successfully',
+    statusCode: 200,
+    data: result,
+  });
+});
+
 export const BlogControllers = {
   createBlog,
+  updateBlog,
 };

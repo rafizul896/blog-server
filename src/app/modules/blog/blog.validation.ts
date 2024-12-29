@@ -18,6 +18,7 @@ const updateBlogValidationSchema = z.object({
   body: z.object({
     title: z.string().optional(),
     content: z.string().optional(),
+    author: z.string().optional(),
     isPublished: z.boolean().optional(),
   }),
 });
