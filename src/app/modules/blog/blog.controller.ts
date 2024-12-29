@@ -1,19 +1,12 @@
-import config from '../../config';
 import catchAsync from '../../utils/catchAsynce';
+import decodedToken from '../../utils/decodedToken';
 import sendResponce from '../../utils/sendResponce';
 import { User } from '../user/user.mode';
 import { BlogServices } from './blog.service';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const createBlog = catchAsync(async (req, res) => {
   const token = req.headers.authorization;
-
-  const decoded = jwt.verify(
-    token as string,
-    config.jwt_access_secret as string,
-  ) as JwtPayload;
-
-  const { email } = decoded;
+  const { email } = decodedToken(token as string);
 
   const user = await User.findOne({ email }).select('_id');
 
@@ -33,13 +26,7 @@ const createBlog = catchAsync(async (req, res) => {
 const updateBlog = catchAsync(async (req, res) => {
   const { id } = req.params;
   const token = req.headers.authorization;
-
-  const decoded = jwt.verify(
-    token as string,
-    config.jwt_access_secret as string,
-  ) as JwtPayload;
-
-  const { email } = decoded;
+  const { email } = decodedToken(token as string);
 
   const result = await BlogServices.updateBlogIntoDB(id, email, req.body);
 

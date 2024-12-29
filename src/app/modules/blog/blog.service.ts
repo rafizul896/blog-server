@@ -36,7 +36,7 @@ const updateBlogIntoDB = async (
   const user = await User.findById(payload.author);
 
   //  check author is exists in User collection
-  if (!user) {
+  if (payload.author && !user) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Author is not Found!');
   }
 
@@ -59,7 +59,10 @@ const updateBlogIntoDB = async (
   };
 };
 
+const deleteBlogFromDB = () => {};
+
 export const BlogServices = {
   createBlogIntoDB,
   updateBlogIntoDB,
+  deleteBlogFromDB,
 };
