@@ -21,5 +21,6 @@ router.put(
 );
 
 router.delete('/:id', auth('admin', 'user'), BlogControllers.deleteBlog);
+router.get('/', BlogControllers.getAllBlogs);
 
 export const blogRoutes = router;

@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import AppError from '../../errors/AppError';
 import { IUser } from '../user/user.interface';
 import { User } from '../user/user.mode';
@@ -77,8 +78,37 @@ const deleteBlogFromDB = async (
   return result;
 };
 
+const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
+  const { search, sortBy, sortOrder, filter, page, limit } = query;
+
+  const searchQuery: Record<string, unknown> = {};
+
+  if (search) {
+    searchQuery.title = { $regex: search, $options: 'i' };
+  }
+
+  if (filter) {
+    searchQuery.author = new mongoose.Types.ObjectId(filter as string);
+  }
+
+  // Sorting and pagination (optional)
+  const sortField = sortBy || 'createdAt';
+  const sortDirection = sortOrder === 'desc' ? -1 : 1;
+  const pageNumber = Number(page) || 1;
+  const pageSize = Number(limit) || 10;
+  const skip = (pageNumber - 1) * pageSize;
+
+  const result = await Blog.find(searchQuery)
+    .sort({ [sortField as string]: sortDirection })
+    .skip(skip)
+    .limit(pageSize).populate('author');
+
+  return result;
+};
+
 export const BlogServices = {
   createBlogIntoDB,
   updateBlogIntoDB,
   deleteBlogFromDB,
+  getAllBlogsFromDB,
 };
