@@ -4,7 +4,7 @@ interface IResponce<T> {
   success: boolean;
   message: string;
   statusCode: number;
-  data: T;
+  data?: T;
 }
 
 const sendResponce = <T>(res: Response, data: IResponce<T>) => {

@@ -7,7 +7,6 @@ import httpStatus from 'http-status-codes';
 
 const createBlogIntoDB = async (payload: IBlog) => {
   const result = await Blog.create(payload);
-
   const author = await User.findById(payload.author);
 
   return {
@@ -59,7 +58,24 @@ const updateBlogIntoDB = async (
   };
 };
 
-const deleteBlogFromDB = () => {};
+const deleteBlogFromDB = async (
+  id: string,
+  reqUserEmail: string,
+  reqUserRole: string,
+) => {
+  const blog = await Blog.findById(id).populate<{ author: IUser }>('author');
+
+  if (!blog) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Blog is not Found!');
+  }
+
+  if (reqUserRole === 'user' && blog?.author?.email !== reqUserEmail) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Action not permitted');
+  }
+
+  const result = await Blog.findByIdAndDelete(id);
+  return result;
+};
 
 export const BlogServices = {
   createBlogIntoDB,
