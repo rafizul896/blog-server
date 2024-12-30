@@ -101,7 +101,8 @@ const getAllBlogsFromDB = async (query: Record<string, unknown>) => {
   const result = await Blog.find(searchQuery)
     .sort({ [sortField as string]: sortDirection })
     .skip(skip)
-    .limit(pageSize).populate('author');
+    .limit(pageSize)
+    .populate('author');
 
   return result;
 };
