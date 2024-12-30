@@ -62,7 +62,6 @@ const updateBlogIntoDB = async (
 const deleteBlogFromDB = async (
   id: string,
   reqUserEmail: string,
-  reqUserRole: string,
 ) => {
   const blog = await Blog.findById(id).populate<{ author: IUser }>('author');
 
@@ -70,7 +69,7 @@ const deleteBlogFromDB = async (
     throw new AppError(httpStatus.BAD_REQUEST, 'Blog is not Found!');
   }
 
-  if (reqUserRole === 'user' && blog?.author?.email !== reqUserEmail) {
+  if (blog?.author?.email !== reqUserEmail) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Action not permitted');
   }
 
