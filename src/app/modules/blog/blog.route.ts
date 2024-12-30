@@ -8,7 +8,7 @@ const router = Router();
 
 router.post(
   '/',
-  auth('user', 'admin'),
+  auth('user'),
   validateRequest(BlogValidations.createBlogValidationSchema),
   BlogControllers.createBlog,
 );
