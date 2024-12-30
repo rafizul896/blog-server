@@ -13,7 +13,7 @@ router.post(
   BlogControllers.createBlog,
 );
 
-router.put(
+router.patch(
   '/:id',
   auth('user'),
   validateRequest(BlogValidations.updateBlogValidationSchema),
