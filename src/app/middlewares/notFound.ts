@@ -6,7 +6,10 @@ const notFound = (req: Request, res: Response, next: NextFunction) => {
     success: false,
     message: 'API Not Found',
     statusCode: httpStatus.NOT_FOUND,
-    error: '',
+    error: {
+      details: '',
+    },
+    stack: null,
   });
 
   next();
