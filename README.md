@@ -89,7 +89,7 @@ This project is a backend application for a **Blog Management System** that supp
 {
   "success": false,
   "message": "Error message describing the issue",
-  "statusCode": 400,
+  "statusCode": code,
   "error": {
     "details": "Additional error details, if applicable"
   },
